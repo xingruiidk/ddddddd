@@ -16,75 +16,204 @@ let gamestarted = false;
 let heartsGO = [];
 let hearts = 3;
 
-// Function to start the game
 function startGame() {
-    // Initialize game variables
-    // Hide UI elements like "YouWon" and "YouLost"
-    // Set gamestarted flag to false
-    // Set userTurn flag to false
-    // Start game countdown (if applicable)
-    // Set up initial game state (hide sauces, etc.)
-    // Start the game loop
+    gamestarted = true;
+    userTurnFlag = false;
+    updateRoundDisplay();
+    playSimonSays();
 }
 
-// Function to update game state
-function update() {
-    // Update countdown timer (if applicable)
-    // Check for game over conditions (time runs out, no hearts left)
-    // Update UI elements based on game state
+// Function to update round display
+function updateRoundDisplay() {
+    document.getElementById('round-display').innerText = `Round: ${round}`;
 }
 
 // Function to play Simon Says
 function playSimonSays() {
-    // Display current round number
-    // Loop for AI's turn
-    //    - Move cat paw to random point
-    //    - Add index of the point to AI's list
-    //    - Increment CurrentMoves
-    //    - Wait for catTime seconds
-    // Start user's turn
+    aiList = [];
+    CurrentMoves = 0;
+    catMoving = true;
+    for (let i = 0; i < MaxMoves; i++) {
+        let randomIndex = Math.floor(Math.random() * 5);
+        aiList.push(randomIndex);
+        moveCatPaw(randomIndex);
+    }
+    setTimeout(() => {
+        catMoving = false;
+        userTurnFlag = true;
+    }, catTime * 1000 + 500);
 }
 
 // Function to move the cat paw
 function moveCatPaw(targetPosition) {
-    // Move cat paw towards target position
-    // Update currentIndex based on the target position
+    currentIndex = targetPosition;
+    // Assuming there's a function to move the cat paw visually
     // Show sauce at the current position
     // Wait for a short delay to display the sauce
-    // Hide the sauce
-    // Wait for another short delay
+    setTimeout(() => {
+        // Hide the sauce
+        setTimeout(() => {
+            // Wait for another short delay
+        }, 500);
+    }, 500);
 }
 
 // Function for user's turn
 function userTurn() {
-    // Allow user to input moves by clicking buttons
-    // Keep track of user's input in userList
-    // Wait for user to finish inputting moves
-}
-
-// Function to check user input
-function checkUserInput() {
-    // Compare userList with aiList
-    // Return true if they match, false otherwise
-}
-
-// Function for correct input
-function correct() {
-    // Flash buttons or provide visual/audio feedback for correct input
-}
-
-// Function for wrong input
-function wrong() {
-    // Flash buttons or provide visual/audio feedback for wrong input
-    // Reduce hearts
+    userList = [];
 }
 
 // Event handler for button clicks
 function handleButtonClick(index) {
-    // Add clicked button index to userList
+    if (userTurnFlag) {
+        userList.push(index);
+        if (userList.length === MaxMoves) {
+            if (checkUserInput()) {
+                correct();
+            } else {
+                wrong();
+            }
+        }
+    }
 }
 
-// Other functions and event listeners
+// Function to check user input
+function checkUserInput() {
+    for (let i = 0; i < MaxMoves; i++) {
+        if (userList[i] !== aiList[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Function for correct input
+function correct() {
+    // Provide visual/audio feedback for correct input
+    alert("Correct!");
+    round++;
+    updateRoundDisplay();
+    playSimonSays();
+}
+
+// Function for wrong input
+function wrong() {
+    // Provide visual/audio feedback for wrong input
+    alert("Wrong!");
+    hearts--;
+    if (hearts === 0) {
+        endGame();
+    } else {
+        playSimonSays();
+    }
+}
+
+// Function to end the game
+function endGame() {
+    // Game over logic
+    alert("Game Over!");
+    gamestarted = false;
+}
+
+// Call startGame function to start the game
+startGame();function startGame() {
+    gamestarted = true;
+    userTurnFlag = false;
+    updateRoundDisplay();
+    playSimonSays();
+}
+
+// Function to update round display
+function updateRoundDisplay() {
+    document.getElementById('round-display').innerText = `Round: ${round}`;
+}
+
+// Function to play Simon Says
+function playSimonSays() {
+    aiList = [];
+    CurrentMoves = 0;
+    catMoving = true;
+    for (let i = 0; i < MaxMoves; i++) {
+        let randomIndex = Math.floor(Math.random() * 5);
+        aiList.push(randomIndex);
+        moveCatPaw(randomIndex);
+    }
+    setTimeout(() => {
+        catMoving = false;
+        userTurnFlag = true;
+    }, catTime * 1000 + 500);
+}
+
+// Function to move the cat paw
+function moveCatPaw(targetPosition) {
+    currentIndex = targetPosition;
+    // Assuming there's a function to move the cat paw visually
+    // Show sauce at the current position
+    // Wait for a short delay to display the sauce
+    setTimeout(() => {
+        // Hide the sauce
+        setTimeout(() => {
+            // Wait for another short delay
+        }, 500);
+    }, 500);
+}
+
+// Function for user's turn
+function userTurn() {
+    userList = [];
+}
+
+// Event handler for button clicks
+function handleButtonClick(index) {
+    if (userTurnFlag) {
+        userList.push(index);
+        if (userList.length === MaxMoves) {
+            if (checkUserInput()) {
+                correct();
+            } else {
+                wrong();
+            }
+        }
+    }
+}
+
+// Function to check user input
+function checkUserInput() {
+    for (let i = 0; i < MaxMoves; i++) {
+        if (userList[i] !== aiList[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Function for correct input
+function correct() {
+    // Provide visual/audio feedback for correct input
+    alert("Correct!");
+    round++;
+    updateRoundDisplay();
+    playSimonSays();
+}
+
+// Function for wrong input
+function wrong() {
+    // Provide visual/audio feedback for wrong input
+    alert("Wrong!");
+    hearts--;
+    if (hearts === 0) {
+        endGame();
+    } else {
+        playSimonSays();
+    }
+}
+
+// Function to end the game
+function endGame() {
+    // Game over logic
+    alert("Game Over!");
+    gamestarted = false;
+}
 
 // Call startGame function to start the game
 startGame();
